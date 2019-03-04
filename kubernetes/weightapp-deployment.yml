@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: weightapp
+spec:
+  ports:
+    - port: 8080
+      name: backend
+    - port: 80
+      name: frontend
+    - port: 27017
+      name: mongodb
+  selector:
+    app: weightapp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weightapp
+  labels:
+    app: weightapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weightapp
+  template:
+    metadata:
+      labels:
+        app: weightapp
+    spec:
+      containers:
+      - name: frontend
+        image: weightapp_frontend:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: UPSTREAM_SERVER
+          value: http://localhost:8080
+        - name: REAL_IP_FROM
+          value: 10.244.0.0/16
+
+      - name: backend
+        image: weightapp_backend:latest
+        ports:
+        - containerPort: 8080
+
+      - name: mongodb
+        image: mongo:4.0.6
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: weightapp-persistent-storage
+          mountPath: /data/db
+          
+      volumes:
+      - name: weightapp-persistent-storage
+        persistentVolumeClaim:
+          claimName: weightapp-pv-claim
+          

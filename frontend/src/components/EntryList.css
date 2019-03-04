@@ -1,0 +1,57 @@
+@keyframes highlight {
+
+    from {
+        background-color: revert;
+    }
+
+    20% {
+        background-color: #bfff64;
+    }
+
+    to {
+        background-color: revert;
+    }
+
+}
+
+.entryList {
+
+    width: 100%;
+    margin: 1em auto;
+    border-collapse: collapse;
+
+}
+.entryList th, .entryList td {
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+
+.entryList th {
+
+    border-bottom-width: 3px;
+    background-color: #4a9edb;
+    color: #edfeff;
+
+}
+
+.entryList tr:nth-child(odd) td:nth-child(even) {
+    background-color: #f7f7ff;
+}
+
+.entryList tr:nth-child(even) td {
+    background-color: #eff6ff;
+
+}
+
+.entryList tr:nth-child(even) td:nth-child(even) {
+    background-color: #deeaff;
+}
+
+.entryList tr.highlight td {
+    animation-duration: 1.2s;
+    animation-name: highlight;
+    animation-delay: 0.5s;
+    animation-fill-mode: forwards; /* to make animation stop at last (height 0) frame */
+}

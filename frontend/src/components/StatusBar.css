@@ -1,0 +1,87 @@
+
+@keyframes loadbar {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+    
+}
+
+@keyframes appear {
+    from {
+        height: 0;
+    }
+
+    to {
+        height: 2em;
+    }
+
+}
+
+@keyframes disappear {
+    from {
+        height: 2em;
+    }
+
+    to {
+        height: 0;
+    }
+
+}
+
+.statusBar {
+
+}
+
+.statusBar .loadBar {
+    height: 5px;
+    width: 0;
+    background-color: #3bff4b;
+    position: absolute;
+    bottom: 0;
+}
+
+.statusBar .content {
+    font-weight: bold;
+    padding: 0.4em;
+}
+
+.statusBar .holder {
+    position: relative; /* to make the load bar to "hover" over background */
+    overflow: hidden; /* the status text might overflow when playing appear/disappear animations */
+}
+
+
+.statusBar .inactive {
+
+}
+
+.statusBar .active {
+    background-color: #575757;
+    color: #ffeece;
+    animation-duration: 0.3s;
+    animation-name: appear;
+}
+
+.statusBar .active .loadBar {
+    animation-duration: 10s;
+    animation-name: loadbar;
+    animation-timing-function: cubic-bezier(0,.2,.3,1); /* http://cubic-bezier.com/ */
+}
+
+.statusBar .success {
+    background-color: #bfff64;
+    color: #5db02b;
+    animation-duration: 0.3s;
+    animation-name: disappear;
+    animation-delay: 1s;
+    animation-fill-mode: forwards; /* to make animation stop at last (height 0) frame */
+}
+
+.statusBar .failure {
+    background-color: #e41313;
+    color: #ffe0ab;
+}

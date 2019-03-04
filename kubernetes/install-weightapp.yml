@@ -1,0 +1,27 @@
+
+- hosts: kube-nodes
+  tasks:
+
+  - name: create /weightapp directory for mongodb
+    file:
+      path: /mnt/kube/weightapp
+      state: directory
+      recurse: yes
+      owner: 1000
+      group: 1000
+    when: inventory_hostname in groups['weightapp-node']
+
+  - name: run weightapp-pv
+    k8s:
+      state: present
+      namespace: default
+      definition: "{{ lookup('template', 'weightapp-pv.yml') }}"
+    when: inventory_hostname in groups['kube-master']
+
+  - name: run weightapp-deployment
+    k8s:
+      state: present
+      namespace: default
+      definition: "{{ lookup('template', 'weightapp-deployment.yml') }}"
+    when: inventory_hostname in groups['kube-master']
+
