@@ -35,14 +35,14 @@ public class DBConnector {
     private MongoCollection<User> userCollection;
 
     @Autowired
-    DBConnector(@Value("${dbname:weightapp}") String dbName) {
+    DBConnector(@Value("${dbconnectionstring:mongodb://localhost}") String dbConnectionString, @Value("${dbname:weightapp}") String dbName) {
 
-        log.info(String.format("Using %s as dbname", dbName));
+        log.info(String.format("Using %s as db connection string and %s as dbname", dbConnectionString, dbName));
 
         CodecRegistry pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
                 fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 
-        mongoClient = MongoClients.create();
+        mongoClient = MongoClients.create(dbConnectionString);
         mongoDatabase = mongoClient.getDatabase(dbName).withCodecRegistry(pojoCodecRegistry);
         userCollection = mongoDatabase.getCollection("user", User.class);
 
